@@ -1,0 +1,31 @@
+# Runtime / caches
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+node_modules/
+*.log
+
+# Generated packages and verification output
+output/
+dist_student/
+tmp_dist_student_qa/
+tmp_dup_root_qa/
+tmp_out_edge_dist/
+tmp_single_set_root/
+
+# Local render/debug artifacts
+tmp_*
+*.bin
+
+# Generated exam/content exports kept local by default
+*.pdf
+*.docx
+*.zip
+*.csv
+g1_quality_loop_latest.txt
+광영여고_*.md
+
+# Keep code-facing project docs trackable
+!KY_Transform_Engine_README.md
+!README.md

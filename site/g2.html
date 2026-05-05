@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>광영여고 2025 고2 영어 변형 분석</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .g2-hero {
+        min-height: auto;
+        grid-template-columns: minmax(0, 1fr) minmax(320px, 0.68fr);
+      }
+
+      .mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .mini-table th,
+      .mini-table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      .mini-table th {
+        background: #f0ece3;
+        font-weight: 900;
+      }
+
+      .mini-table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .cluster-list {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .cluster-list article {
+        min-height: 190px;
+      }
+
+      .formula-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .formula-grid div {
+        padding: 18px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+      }
+
+      .formula-grid strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 15px;
+      }
+
+      .formula-grid span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      @media (max-width: 980px) {
+        .cluster-list,
+        .formula-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .cluster-list,
+        .formula-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .mini-table {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar" aria-label="페이지 탐색">
+      <a class="brand" href="./index.html">고준태 영어</a>
+      <nav class="nav">
+        <a href="./elite.html">1등급 전략</a>
+        <a href="./integrated.html">통합</a>
+        <a href="./index.html">고1 분석</a>
+        <a href="#clusters">출처맵</a>
+        <a href="#switch">변형 공식</a>
+        <a href="#curriculum">교재 설계</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero g2-hero">
+        <div class="hero-copy">
+          <p class="eyebrow">광영여고 2025학년도 2학년 영어</p>
+          <h1>고2는 최신 고2 학평 한 회차를 중심 클러스터로 박아 넣는다.</h1>
+          <p class="lead">
+            네 시험 모두 1-5번 듣기, 학교지문 단답형, 학평 유형 전환, 22-27번 어휘 구간이 반복됩니다.
+            고1식 출처 추적만으로는 부족하고, 지문을 다른 유형으로 바꾸는 훈련이 필요합니다.
+          </p>
+          <div class="hero-actions">
+            <a class="primary" href="#clusters">출처맵 보기</a>
+            <a class="secondary" href="../광영여고_2025_2학년_문항매트릭스_1차.csv">문항 매트릭스</a>
+          </div>
+        </div>
+        <div class="hero-proof" aria-label="고2 출제 흐름">
+          <div class="proof-line">
+            <span>학평 빈칸</span>
+            <strong>원문</strong>
+            <i></i>
+            <strong>제목·요지</strong>
+            <span>학교</span>
+          </div>
+          <div class="proof-line">
+            <span>학평 순서</span>
+            <strong>원문</strong>
+            <i></i>
+            <strong>어법·어휘</strong>
+            <span>학교</span>
+          </div>
+          <div class="proof-line">
+            <span>학교지문</span>
+            <strong>본문</strong>
+            <i></i>
+            <strong>단답수정</strong>
+            <span>학교</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard" aria-label="고2 출제 비율">
+        <div class="section-head">
+          <p class="eyebrow">Question Mix</p>
+          <h2>네 시험 전체 124문항 기준 비율</h2>
+          <p class="note">객관식 27문항 + 단답형 4문항을 한 시험 31문항으로 보고 계산했습니다.</p>
+        </div>
+        <div class="type-strip" aria-label="고2 문항수 기준 비율">
+          <div style="--w:16.1%"><span>듣기</span><strong>16.1%</strong></div>
+          <div style="--w:39.5%"><span>학교/교과서/수업지문</span><strong>39.5%</strong></div>
+          <div style="--w:25%"><span>학평 직접 변형</span><strong>25.0%</strong></div>
+          <div style="--w:19.4%"><span>후반 어휘</span><strong>19.4%</strong></div>
+        </div>
+
+        <table class="mini-table" aria-label="시험별 문항수 비율">
+          <thead>
+            <tr>
+              <th>시험</th>
+              <th>학평 직접 변형</th>
+              <th>학교/교과서/수업지문</th>
+              <th>후반 어휘</th>
+              <th>핵심 판정</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2학년 1학기 중간 영어I</td>
+              <td>2024-3 고2, 15-21번+단답4</td>
+              <td>stress, Columbus/tomato, product placement</td>
+              <td>22-27번</td>
+              <td>유형 스위치가 가장 선명함</td>
+            </tr>
+            <tr>
+              <td>2학년 1학기 기말 영어I</td>
+              <td>2024-6 고2, 12-14번+18-21번</td>
+              <td>sharing economy, Flamenco, puppet shows, Mars</td>
+              <td>22-27번</td>
+              <td>학평과 학교지문이 교차 배치됨</td>
+            </tr>
+            <tr>
+              <td>2학년 2학기 중간 영어II</td>
+              <td>2024-9 고2, 9-12번+19-21번+단답4</td>
+              <td>statistics, Switching Ages, travel/connectivity</td>
+              <td>22-27번</td>
+              <td>단답형 생산 문제가 강함</td>
+            </tr>
+            <tr>
+              <td>2학년 2학기 기말 영어II</td>
+              <td>2025-10 고2, 12-18번+단답3</td>
+              <td>Merian, IoT/smart city, Trysdale</td>
+              <td>22-27번</td>
+              <td>최신 학평 회차를 바로 사용</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="clusters" class="band">
+        <div class="section-head">
+          <p class="eyebrow">Source Clusters</p>
+          <h2>시험별 학평 변형 지도</h2>
+        </div>
+        <div class="source-grid cluster-list">
+          <article>
+            <span>1학기 중간</span>
+            <h3>2024년 3월 고2</h3>
+            <p>31번 빈칸은 순서로, 30번 어휘는 빈칸으로, 39번 삽입은 어법 2개로 바뀌었습니다.</p>
+          </article>
+          <article>
+            <span>1학기 기말</span>
+            <h3>2024년 6월 고2</h3>
+            <p>33·34번 빈칸은 요지와 요약 빈칸으로, 36번 순서는 내용불일치로 바뀌었습니다.</p>
+          </article>
+          <article>
+            <span>2학기 중간</span>
+            <h3>2024년 9월 고2</h3>
+            <p>37번 순서는 어법으로, 39번 삽입은 내용불일치로, 31번 빈칸은 흐름무관으로 바뀌었습니다.</p>
+          </article>
+          <article>
+            <span>2학기 기말</span>
+            <h3>2025년 10월 고2</h3>
+            <p>32번 빈칸은 제목으로, 29번 어법은 빈칸으로, 40번 요약은 어휘 판단으로 바뀌었습니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="switch" class="dashboard">
+        <div class="section-head">
+          <p class="eyebrow">Switch Formula</p>
+          <h2>고2 선생님의 변형 공식</h2>
+        </div>
+        <div class="formula-grid">
+          <div><strong>빈칸 → 제목·요지</strong><span>정답 문장을 선지화해서 전체 주장을 묻습니다.</span></div>
+          <div><strong>순서 → 어법</strong><span>연결어 단서를 지우고 문장 내부 오류를 심습니다.</span></div>
+          <div><strong>삽입 → 불일치</strong><span>삽입 위치 대신 세부 사실관계를 선지로 만듭니다.</span></div>
+          <div><strong>요약 → 어휘</strong><span>요약 핵심어를 지문 속 문맥어휘 판단으로 분산합니다.</span></div>
+          <div><strong>어법 → 빈칸</strong><span>어법 문장을 지문 핵심 논리 자리로 바꿉니다.</span></div>
+          <div><strong>학교지문 → 단답수정</strong><span>오류 2-3개를 직접 찾아 고쳐 쓰게 합니다.</span></div>
+          <div><strong>학교지문 → 조건영작</strong><span>해석과 어순을 동시에 검사합니다.</span></div>
+          <div><strong>후반 → 공통어휘</strong><span>짧은 예문 2개로 collocation을 확인합니다.</span></div>
+        </div>
+      </section>
+
+      <section id="curriculum" class="band">
+        <div class="section-head">
+          <p class="eyebrow">Curriculum</p>
+          <h2>고2 전용 교재 구조</h2>
+        </div>
+        <table class="mini-table" aria-label="고2 교재 구조">
+          <thead>
+            <tr>
+              <th>권</th>
+              <th>목적</th>
+              <th>필수 구성</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Source Cluster Book</td>
+              <td>시험별 학평 회차 원문 정리</td>
+              <td>2024-3, 2024-6, 2024-9, 2025-10 핵심 지문 구조표</td>
+            </tr>
+            <tr>
+              <td>Type Switch Book</td>
+              <td>학교식 유형 전환 훈련</td>
+              <td>빈칸→순서, 순서→어법, 삽입→내용불일치 세트</td>
+            </tr>
+            <tr>
+              <td>School Passage Edit Book</td>
+              <td>학교지문 단답형 대비</td>
+              <td>어법 오류 2-3개 삽입, 요약 핵심어, 조건 영작</td>
+            </tr>
+            <tr>
+              <td>Vocab Close Book</td>
+              <td>22-27번 방어</td>
+              <td>공통어, 영영풀이, collocation, 다의어</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>

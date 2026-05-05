@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>광영여고 영어 1등급 전략 시스템</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .system-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .system-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .system-card span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 14px;
+        border: 1px solid var(--ink);
+        border-radius: 50%;
+        font-weight: 900;
+      }
+
+      .system-card h3 {
+        margin: 0 0 10px;
+        font-size: 20px;
+      }
+
+      .system-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .flow {
+        display: grid;
+        gap: 10px;
+        max-width: 980px;
+      }
+
+      .flow div {
+        display: grid;
+        grid-template-columns: 160px 1fr;
+        gap: 16px;
+        align-items: center;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 16px 18px;
+      }
+
+      .flow strong {
+        font-size: 14px;
+      }
+
+      .flow span {
+        color: var(--muted);
+      }
+
+      .mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .mini-table th,
+      .mini-table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      .mini-table th {
+        background: #f0ece3;
+        font-weight: 900;
+      }
+
+      .mini-table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      @media (max-width: 900px) {
+        .system-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .flow div {
+          grid-template-columns: 1fr;
+        }
+
+        .mini-table {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar" aria-label="페이지 탐색">
+      <a class="brand" href="./integrated.html">고준태 영어</a>
+      <nav class="nav">
+        <a href="./integrated.html">통합</a>
+        <a href="./index.html">고1</a>
+        <a href="./g2.html">고2</a>
+        <a href="#system">시스템</a>
+        <a href="#curriculum">커리</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Kwangyoung Exam Operating System</p>
+          <h1>광영여고 영어는 원문 암기가 아니라 변형 대응 시스템으로 잡는다.</h1>
+          <p class="lead">
+            고1은 YBM박 본문과 과거 고1 학평, 고2는 최신 고2 학평 클러스터와 학교/수업지문 단답형이 승부처입니다.
+            출처를 분리하고, 학교식 변형을 복원하고, 같은 방식의 유사문항을 반복시키는 구조로 1등급을 만듭니다.
+          </p>
+          <div class="hero-actions">
+            <a class="primary" href="../광영여고_1타강사_전략패키지.md">전략패키지</a>
+            <a class="secondary" href="../광영여고_변형문항_생성시스템_설계서.md">문항생성 시스템</a>
+          </div>
+        </div>
+        <div class="hero-proof" aria-label="광영여고 영어 전략 흐름">
+          <div class="proof-line">
+            <span>출처</span>
+            <strong>분리</strong>
+            <i></i>
+            <strong>변형</strong>
+            <span>복원</span>
+          </div>
+          <div class="proof-line">
+            <span>문항</span>
+            <strong>생성</strong>
+            <i></i>
+            <strong>오답</strong>
+            <span>설계</span>
+          </div>
+          <div class="proof-line">
+            <span>학생</span>
+            <strong>지표</strong>
+            <i></i>
+            <strong>약점</strong>
+            <span>처방</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="system" class="dashboard">
+        <div class="section-head">
+          <p class="eyebrow">Six Modules</p>
+          <h2>1등급을 만드는 운영 모듈</h2>
+        </div>
+        <div class="system-grid">
+          <article class="system-card">
+            <span>1</span>
+            <h3>출처분리</h3>
+            <p>본문, 학평, 학교/수업지문, 후반 어휘를 시험별로 분리합니다.</p>
+          </article>
+          <article class="system-card">
+            <span>2</span>
+            <h3>구조복원</h3>
+            <p>문단 기능, 연결어, 지시어, 결론문을 표시해 원문 구조를 잡습니다.</p>
+          </article>
+          <article class="system-card">
+            <span>3</span>
+            <h3>유형전환</h3>
+            <p>빈칸을 순서로, 삽입을 불일치로, 어법을 빈칸으로 바꿉니다.</p>
+          </article>
+          <article class="system-card">
+            <span>4</span>
+            <h3>오답설계</h3>
+            <p>부분일치, 인과반전, 주체변경, collocation 오류를 훈련합니다.</p>
+          </article>
+          <article class="system-card">
+            <span>5</span>
+            <h3>단답생산</h3>
+            <p>요약 핵심어, 어법수정, 조건 영작을 채점 기준까지 맞춥니다.</p>
+          </article>
+          <article class="system-card">
+            <span>6</span>
+            <h3>약점처방</h3>
+            <p>학생별 Source, Structure, Type Switch, Grammar, Vocab, Short Answer 지표를 관리합니다.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="band">
+        <div class="section-head">
+          <p class="eyebrow">Thinking Flow</p>
+          <h2>시험장에서 작동해야 하는 사고 순서</h2>
+        </div>
+        <div class="flow">
+          <div><strong>1. 출처 판단</strong><span>이 지문이 교과서, 학평, 학교지문, 작품 중 어디인가?</span></div>
+          <div><strong>2. 원문 유형 회상</strong><span>원문은 빈칸, 어법, 순서, 삽입 중 무엇이었나?</span></div>
+          <div><strong>3. 학교식 변형 파악</strong><span>학교가 어떤 유형으로 바꿨나?</span></div>
+          <div><strong>4. 정답 축 설정</strong><span>정답은 원인-결과, 대조, 정의, 결론 중 어디에서 나오는가?</span></div>
+          <div><strong>5. 오답 제거</strong><span>오답이 부분일치인지, 인과반전인지, 주체변경인지 태깅한다.</span></div>
+          <div><strong>6. 단답 형태 확인</strong><span>어형, 수일치, 철자, 보기 조건까지 맞춘다.</span></div>
+        </div>
+      </section>
+
+      <section id="curriculum" class="dashboard">
+        <div class="section-head">
+          <p class="eyebrow">Curriculum</p>
+          <h2>4주 정규 커리</h2>
+        </div>
+        <table class="mini-table" aria-label="4주 커리">
+          <thead>
+            <tr>
+              <th>주차</th>
+              <th>목표</th>
+              <th>수업</th>
+              <th>숙제</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1주차</td>
+              <td>출처 장악</td>
+              <td>시험범위 출처맵, 지문 구조표</td>
+              <td>문단 기능 표시, 요약문 복원</td>
+            </tr>
+            <tr>
+              <td>2주차</td>
+              <td>변형 원리</td>
+              <td>본문 변형, 학평 유형 전환</td>
+              <td>어법수정, 변형문항 재풀이</td>
+            </tr>
+            <tr>
+              <td>3주차</td>
+              <td>단답형과 오답</td>
+              <td>채점 기준, 매력적 오답 분석</td>
+              <td>학생이 직접 오답선지 제작</td>
+            </tr>
+            <tr>
+              <td>4주차</td>
+              <td>실전 압축</td>
+              <td>실전 모의, 약점 유형 재처방</td>
+              <td>D-3 루틴, 후반 어휘 회전</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>

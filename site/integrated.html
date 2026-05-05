@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>광영여고 2025 고1·고2 출처분리 통합 분석</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <style>
+      .two-col {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .plain-card {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .plain-card h3 {
+        margin: 0 0 12px;
+        font-size: 22px;
+      }
+
+      .plain-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .mini-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+      }
+
+      .mini-table th,
+      .mini-table td {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 14px;
+      }
+
+      .mini-table th {
+        background: #f0ece3;
+        font-weight: 900;
+      }
+
+      .mini-table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .ratio-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .ratio-block {
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 20px;
+      }
+
+      .ratio-block h3 {
+        margin: 0 0 16px;
+      }
+
+      .source-pill {
+        display: inline-block;
+        margin: 0 6px 8px 0;
+        padding: 8px 10px;
+        border: 1px solid rgba(20, 20, 20, 0.18);
+        background: #fff;
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      @media (max-width: 900px) {
+        .two-col,
+        .ratio-pair {
+          grid-template-columns: 1fr;
+        }
+
+        .mini-table {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar" aria-label="페이지 탐색">
+      <a class="brand" href="./index.html">고준태 영어</a>
+      <nav class="nav">
+        <a href="./elite.html">1등급 전략</a>
+        <a href="./index.html">고1</a>
+        <a href="./g2.html">고2</a>
+        <a href="#ratio">비율</a>
+        <a href="#source">출처분리</a>
+        <a href="#curriculum">교재</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">광영여고 2025 통합 분석</p>
+          <h1>고1은 본문+과거 학평, 고2는 최신 학평+학교지문 단답형.</h1>
+          <p class="lead">
+            같은 광영여고라도 학년별 출제자가 다르면 준비 방식이 달라집니다. 고1은 YBM박 본문과 과거 고1 학평을 넓게 변형하고,
+            고2는 시험 시기와 가까운 고2 학평 한 회차를 클러스터로 쓰며 학교/수업지문 단답형을 강하게 겁니다.
+          </p>
+          <div class="hero-actions">
+            <a class="primary" href="../광영여고_2025_고1고2_출처분리_통합보고서.md">통합 보고서</a>
+            <a class="secondary" href="../광영여고_2025_고1고2_출처분리_통합매트릭스.csv">통합 매트릭스</a>
+          </div>
+        </div>
+        <div class="hero-proof" aria-label="고1 고2 핵심 차이">
+          <div class="proof-line">
+            <span>고1</span>
+            <strong>YBM 본문</strong>
+            <i></i>
+            <strong>과거 고1 학평</strong>
+            <span>넓게</span>
+          </div>
+          <div class="proof-line">
+            <span>고2</span>
+            <strong>인접 고2 학평</strong>
+            <i></i>
+            <strong>학교지문 단답</strong>
+            <span>깊게</span>
+          </div>
+          <div class="proof-line">
+            <span>공통</span>
+            <strong>22-27</strong>
+            <i></i>
+            <strong>단문어휘</strong>
+            <span>고정</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="ratio" class="dashboard">
+        <div class="section-head">
+          <p class="eyebrow">Ratio</p>
+          <h2>문항수 기준 출처 비율</h2>
+          <p class="note">고1은 기존 정밀 매트릭스 119행, 고2는 1차 매트릭스 124행 기준입니다.</p>
+        </div>
+
+        <div class="ratio-pair">
+          <div class="ratio-block">
+            <h3>고1</h3>
+            <div class="type-strip" aria-label="고1 비율">
+              <div style="--w:16.8%"><span>듣기</span><strong>16.8%</strong></div>
+              <div style="--w:29.4%"><span>교과서 본문</span><strong>29.4%</strong></div>
+              <div style="--w:33.6%"><span>학평 직접 변형</span><strong>33.6%</strong></div>
+              <div style="--w:20.2%"><span>후반 어휘</span><strong>20.2%</strong></div>
+            </div>
+          </div>
+          <div class="ratio-block">
+            <h3>고2</h3>
+            <div class="type-strip" aria-label="고2 비율">
+              <div style="--w:16.1%"><span>듣기</span><strong>16.1%</strong></div>
+              <div style="--w:36.3%"><span>학교/수업지문</span><strong>36.3%</strong></div>
+              <div style="--w:25%"><span>학평 직접 변형</span><strong>25.0%</strong></div>
+              <div style="--w:3.2%"><span>작품지문</span><strong>3.2%</strong></div>
+              <div style="--w:19.4%"><span>후반 어휘</span><strong>19.4%</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="source" class="band">
+        <div class="section-head">
+          <p class="eyebrow">Source Separation</p>
+          <h2>시험별 출처 지도</h2>
+        </div>
+
+        <table class="mini-table" aria-label="고1 출처 지도">
+          <thead>
+            <tr>
+              <th>고1 시험</th>
+              <th>교과서 본문</th>
+              <th>학평 직접 변형</th>
+              <th>후반</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1학기 중간</td>
+              <td>공통영어1 1과 Morning Pages, 2과 Octopus</td>
+              <td>2023-3, 2024-3 고1</td>
+              <td>22-27 단문어휘</td>
+            </tr>
+            <tr>
+              <td>1학기 기말</td>
+              <td>공통영어1 3과 Englishes, 4과 AI and the Arts</td>
+              <td>2023-6, 2024-6 고1</td>
+              <td>22-24 단문어휘</td>
+            </tr>
+            <tr>
+              <td>2학기 중간</td>
+              <td>공통영어2 1과 Fake News, 2과 Dry</td>
+              <td>2024-9 고1</td>
+              <td>19-24 단문어휘</td>
+            </tr>
+            <tr>
+              <td>2학기 기말</td>
+              <td>공통영어2 3과 Resilience, 4과 Science for All</td>
+              <td>2023-11 고1</td>
+              <td>19-24 단문어휘</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="mini-table" aria-label="고2 출처 지도" style="margin-top: 22px">
+          <thead>
+            <tr>
+              <th>고2 시험</th>
+              <th>학평 직접 변형</th>
+              <th>학교/수업지문</th>
+              <th>보류/주의</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1학기 중간 영어I</td>
+              <td>2024-3 고2</td>
+              <td>stress, Columbus/tomato, product placement</td>
+              <td>보유 고2 HWP와 직접 불일치</td>
+            </tr>
+            <tr>
+              <td>1학기 기말 영어I</td>
+              <td>2024-6 고2</td>
+              <td>sharing economy, Flamenco, puppet shows, Mars</td>
+              <td>보유 고2 HWP와 직접 불일치</td>
+            </tr>
+            <tr>
+              <td>2학기 중간 영어II</td>
+              <td>2024-9 고2</td>
+              <td>statistics, Switching Ages, travel/connectivity</td>
+              <td>영어II 원문파일 미확보</td>
+            </tr>
+            <tr>
+              <td>2학기 기말 영어II</td>
+              <td>2025-10 고2</td>
+              <td>Merian, IoT/smart city, Trysdale</td>
+              <td>Trysdale은 학평 미검출, 작품지문</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="dashboard">
+        <div class="section-head">
+          <p class="eyebrow">Teacher Profile</p>
+          <h2>출제자별 변형 성향</h2>
+        </div>
+        <div class="two-col">
+          <article class="plain-card">
+            <h3>고1: 넓은 출처 + 균형형 변형</h3>
+            <p>
+              교과서 본문과 고1 학평을 모두 쓰고, 빈칸·삽입·어법·요약·내용불일치를 고르게 돌립니다.
+              학생은 본문 암기와 학평 구조복원을 동시에 해야 합니다.
+            </p>
+          </article>
+          <article class="plain-card">
+            <h3>고2: 회차 집중 + 생산형 단답</h3>
+            <p>
+              최신 인접 고2 학평 한 회차를 집중 사용하고, 학교/수업지문에서는 어법 오류 찾기와 조건 영작으로 상위권을 가릅니다.
+              원문 유형을 그대로 내지 않는 것이 핵심입니다.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section id="curriculum" class="band">
+        <div class="section-head">
+          <p class="eyebrow">Curriculum Split</p>
+          <h2>교재는 학년별로 다르게 나눠야 합니다</h2>
+        </div>
+        <div>
+          <span class="source-pill">G1 Text Book</span>
+          <span class="source-pill">G1 Transform Book</span>
+          <span class="source-pill">G1 Grammar Edit Book</span>
+          <span class="source-pill">G1 Vocab Close Book</span>
+          <span class="source-pill">G2 Source Cluster Book</span>
+          <span class="source-pill">G2 Type Switch Book</span>
+          <span class="source-pill">G2 School Passage Edit Book</span>
+          <span class="source-pill">G2 Vocab Close Book</span>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>KY Transform Engine</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./engine.css" />
+  </head>
+  <body class="engine-body">
+    <aside class="engine-side" aria-label="KY Transform Engine navigation">
+      <a class="engine-brand" href="./elite.html">
+        <span>KY</span>
+        <strong>Transform Engine</strong>
+      </a>
+      <nav>
+        <a href="#workspace">원문 입력</a>
+        <a href="#analysis">분석 결과</a>
+        <a href="#generation">문항 생성</a>
+        <a href="#bank">문제은행</a>
+        <a href="#mock">동형 모의</a>
+        <a href="#export">내보내기</a>
+      </nav>
+      <div class="side-note">
+        <strong>Local-first</strong>
+        <span>원문은 브라우저 작업 상태에만 보관하고, 기본 export는 문항과 근거 메타데이터 중심으로 처리합니다.</span>
+      </div>
+    </aside>
+
+    <main class="engine-main">
+      <header class="engine-top">
+        <div>
+          <p class="eyebrow">Kwangyoung Console</p>
+          <h1>변형문제 출제머신</h1>
+        </div>
+        <div class="top-actions">
+          <a class="secondary" href="./integrated.html">분석 대시보드</a>
+          <a class="secondary" href="./elite.html">1등급 전략</a>
+          <button class="primary" type="button" id="runAnalyzeTop">분석 실행</button>
+        </div>
+      </header>
+
+      <section class="engine-status" aria-label="작업 상태">
+        <div>
+          <span>현재 프리셋</span>
+          <strong id="statusPreset">광영여고 고1</strong>
+        </div>
+        <div>
+          <span>분석 상태</span>
+          <strong id="statusAnalysis">대기</strong>
+        </div>
+        <div>
+          <span>생성 문항</span>
+          <strong id="statusGenerated">0</strong>
+        </div>
+        <div>
+          <span>문제은행</span>
+          <strong id="statusBank">0</strong>
+        </div>
+      </section>
+
+      <section id="workspace" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 1</p>
+            <h2>원문 입력과 메타데이터</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="loadSample">샘플 입력</button>
+            <button type="button" class="primary" id="runAnalyze">지문 분석</button>
+          </div>
+        </div>
+
+        <div class="workspace-grid">
+          <form class="meta-grid" id="metaForm">
+            <label>
+              <span>학년</span>
+              <select id="grade">
+                <option value="g1">고1</option>
+                <option value="g2">고2</option>
+              </select>
+            </label>
+            <label>
+              <span>프리셋</span>
+              <select id="preset">
+                <option value="g1">광영여고 고1</option>
+                <option value="g2">광영여고 고2</option>
+              </select>
+            </label>
+            <label>
+              <span>출처 분류</span>
+              <select id="sourceType">
+                <option value="textbook">교과서 본문</option>
+                <option value="mock">학평 직접 변형</option>
+                <option value="school_passage">학교/수업지문</option>
+                <option value="literature">작품지문</option>
+                <option value="vocab">어휘 자료</option>
+              </select>
+            </label>
+            <label>
+              <span>지문명</span>
+              <input id="title" type="text" placeholder="예: Lesson 1 핵심 본문" />
+            </label>
+            <label>
+              <span>내부 출처</span>
+              <input id="sourceRef" type="text" placeholder="예: 공통영어1 1과 / 2023-3 고1 31번" />
+            </label>
+            <label>
+              <span>시험범위</span>
+              <input id="examScope" type="text" placeholder="예: 고1 1학기 중간" />
+            </label>
+          </form>
+
+          <label class="paste-box">
+            <span>원문 붙여넣기</span>
+            <textarea id="passageText" spellcheck="false" placeholder="본문 또는 학평 지문을 여기에 붙여넣으세요."></textarea>
+          </label>
+        </div>
+      </section>
+
+      <section id="analysis" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 2</p>
+            <h2>지문 분석 JSON</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="copyAnalysisJson">분석 JSON 복사</button>
+          </div>
+        </div>
+        <div class="analysis-layout">
+          <div class="metric-grid" id="analysisMetrics"></div>
+          <div class="analysis-card">
+            <h3>문단 기능</h3>
+            <div id="paragraphRoles" class="role-list empty-state">분석을 실행하면 문단 기능이 표시됩니다.</div>
+          </div>
+          <div class="analysis-card">
+            <h3>출제 사인</h3>
+            <div id="analysisSignals" class="signal-list empty-state">핵심어, 연결어, 어법 후보가 표시됩니다.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="generation" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 3</p>
+            <h2>광영여고식 변형문항 생성</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="selectAllTypes">유형 전체 선택</button>
+            <button type="button" class="primary" id="runGenerate">문항 생성</button>
+          </div>
+        </div>
+
+        <div class="generation-controls">
+          <label>
+            <span>생성 문항 수</span>
+            <input id="targetCount" type="number" min="1" max="120" value="36" />
+          </label>
+          <label>
+            <span>Seed</span>
+            <input id="seed" type="text" placeholder="비워두면 지문 해시 기반" />
+          </label>
+          <div class="type-picker" id="typePicker"></div>
+        </div>
+
+        <div class="question-toolbar">
+          <button type="button" class="secondary" id="saveGenerated">생성 문항 문제은행 저장</button>
+          <button type="button" class="secondary" id="exportGeneratedCsv">생성 문항 CSV</button>
+          <button type="button" class="secondary" id="exportGeneratedJson">생성 문항 JSON</button>
+        </div>
+        <div id="generatedList" class="question-list empty-state">분석 후 문항을 생성하세요.</div>
+      </section>
+
+      <section id="bank" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 4</p>
+            <h2>문제은행</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="exportBankCsv">은행 CSV</button>
+            <button type="button" class="secondary" id="exportBankJson">은행 JSON</button>
+            <button type="button" class="danger" id="clearBank">은행 비우기</button>
+          </div>
+        </div>
+        <div class="bank-filters">
+          <label>
+            <span>유형 필터</span>
+            <select id="bankTypeFilter">
+              <option value="">전체</option>
+            </select>
+          </label>
+          <label>
+            <span>검색</span>
+            <input id="bankSearch" type="search" placeholder="지문명, 유형, 발문 검색" />
+          </label>
+        </div>
+        <div id="bankTable" class="bank-table empty-state">저장된 문항이 없습니다.</div>
+      </section>
+
+      <section id="mock" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 5</p>
+            <h2>동형 모의고사 빌더</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="primary" id="buildMock">동형 모의 조립</button>
+          </div>
+        </div>
+        <div class="mock-controls">
+          <label>
+            <span>모의고사 제목</span>
+            <input id="mockTitle" type="text" placeholder="예: 고1 1학기 중간 동형 1회" />
+          </label>
+          <label>
+            <span>객관식 목표</span>
+            <input id="objectiveCount" type="number" min="1" max="60" value="27" />
+          </label>
+          <label>
+            <span>단답형 목표</span>
+            <input id="shortAnswerCount" type="number" min="0" max="20" value="4" />
+          </label>
+        </div>
+        <div class="question-toolbar">
+          <button type="button" class="secondary" id="exportMockCsv">모의 CSV</button>
+          <button type="button" class="secondary" id="exportMockJson">모의 JSON</button>
+        </div>
+        <div id="mockPreview" class="mock-preview empty-state">문제은행에 문항을 저장한 뒤 조립하세요.</div>
+      </section>
+
+      <section id="export" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 6</p>
+            <h2>프로젝트 백업/복원</h2>
+          </div>
+        </div>
+        <div class="export-grid">
+          <div class="export-card">
+            <h3>백업</h3>
+            <p>분석 결과, 생성 문항, 문제은행, 모의고사 메타데이터를 JSON 번들로 저장합니다.</p>
+            <button type="button" class="primary" id="exportProject">프로젝트 JSON 백업</button>
+          </div>
+          <div class="export-card">
+            <h3>복원</h3>
+            <p>이전에 export한 JSON 번들을 다시 불러옵니다. 원문 전문은 기본 export에 포함하지 않습니다.</p>
+            <input type="file" id="importProject" accept="application/json,.json" />
+          </div>
+          <div class="export-card">
+            <h3>검수 기준</h3>
+            <ul>
+              <li>정답 단일성</li>
+              <li>원문 근거 앵커</li>
+              <li>오답 태그 다양성</li>
+              <li>단답형 채점 기준</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./engine-core.js"></script>
+    <script src="./engine-ui.js"></script>
+  </body>
+</html>
