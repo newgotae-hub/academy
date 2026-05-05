@@ -63,10 +63,10 @@
         <div class="panel-head">
           <div>
             <p class="eyebrow">Step 1</p>
-            <h2>YBM박 교과서 선택</h2>
+            <h2>시험범위 선택</h2>
           </div>
           <div class="panel-actions">
-            <button type="button" class="secondary" id="loadTextbookPassage">선택 본문 불러오기</button>
+            <button type="button" class="secondary" id="loadTextbookPassage">범위 본문 불러오기</button>
             <button type="button" class="primary" id="runAnalyze">지문 분석</button>
           </div>
         </div>
@@ -86,23 +86,40 @@
 
         <div class="workspace-grid">
           <form class="meta-grid" id="metaForm">
-            <label>
-              <span>출판사</span>
-              <select id="publisher" disabled>
-                <option value="ybm_park">YBM박</option>
-              </select>
+            <label class="range-main">
+              <span>시험범위</span>
+              <select id="rangePreset"></select>
             </label>
-            <label>
-              <span>책</span>
-              <select id="textbookBook"></select>
-            </label>
-            <label>
-              <span>단원 제목</span>
-              <select id="textbookLesson"></select>
-            </label>
+            <div class="range-summary" id="rangeSummary">범위를 선택하면 포함 단원이 자동으로 표시됩니다.</div>
             <details class="advanced-meta">
               <summary>고급 설정</summary>
               <div>
+                <label>
+                  <span>장르</span>
+                  <select id="genrePreset">
+                    <option value="all">전체 자동 생성</option>
+                    <option value="school_body">광영여고 본문 기본팩</option>
+                    <option value="grammar">어법만</option>
+                    <option value="vocab">어휘/문맥만</option>
+                    <option value="structure">순서/삽입만</option>
+                    <option value="short_answer">단답형만</option>
+                    <option value="objective">객관식만</option>
+                  </select>
+                </label>
+                <label>
+                  <span>출판사</span>
+                  <select id="publisher" disabled>
+                    <option value="ybm_park">YBM박</option>
+                  </select>
+                </label>
+                <label>
+                  <span>책</span>
+                  <select id="textbookBook"></select>
+                </label>
+                <label>
+                  <span>단원 제목</span>
+                  <select id="textbookLesson"></select>
+                </label>
                 <label>
                   <span>학년</span>
                   <select id="grade">
@@ -144,8 +161,8 @@
           </form>
 
           <label class="paste-box">
-            <span>선택된 본문</span>
-            <textarea id="passageText" spellcheck="false" placeholder="책과 단원 제목을 고르면 본문이 자동으로 들어옵니다. 필요하면 여기서 직접 수정할 수 있습니다."></textarea>
+            <span>선택된 범위 본문</span>
+            <textarea id="passageText" spellcheck="false" placeholder="시험범위를 고르면 해당 단원의 본문이 한 번에 들어옵니다. 필요하면 여기서 직접 수정할 수 있습니다."></textarea>
           </label>
         </div>
       </section>
@@ -180,7 +197,6 @@
             <h2>광영여고식 변형문항 생성</h2>
           </div>
           <div class="panel-actions">
-            <button type="button" class="secondary" id="selectAllTypes">유형 전체 선택</button>
             <button type="button" class="primary" id="runGenerate">문항 생성</button>
           </div>
         </div>
@@ -194,7 +210,15 @@
             <span>Seed</span>
             <input id="seed" type="text" placeholder="비워두면 지문 해시 기반" />
           </label>
-          <div class="type-picker" id="typePicker"></div>
+          <details class="advanced-meta type-advanced">
+            <summary>유형 세부 조정</summary>
+            <div>
+              <div class="type-picker-actions">
+                <button type="button" class="secondary" id="selectAllTypes">유형 전체 선택</button>
+              </div>
+              <div class="type-picker" id="typePicker"></div>
+            </div>
+          </details>
         </div>
 
         <div class="question-toolbar">

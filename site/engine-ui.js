@@ -20,6 +20,128 @@
 
   const $ = (id) => document.getElementById(id);
 
+  const RANGE_PRESETS = [
+    {
+      id: "g1_s1_mid",
+      label: "고1 1학기 중간",
+      bookId: "common_english_1",
+      lessonNos: [1, 2],
+      grade: "g1",
+      preset: "g1",
+      title: "공통영어1 1-2과",
+      sourceRef: "YBM박 공통영어1 1-2과",
+      examScope: "고1 1학기 중간",
+    },
+    {
+      id: "g1_s1_final",
+      label: "고1 1학기 기말",
+      bookId: "common_english_1",
+      lessonNos: [3, 4],
+      grade: "g1",
+      preset: "g1",
+      title: "공통영어1 3-4과",
+      sourceRef: "YBM박 공통영어1 3-4과",
+      examScope: "고1 1학기 기말",
+    },
+    {
+      id: "g1_s2_mid",
+      label: "고1 2학기 중간",
+      bookId: "common_english_2",
+      lessonNos: [1, 2],
+      grade: "g1",
+      preset: "g1",
+      title: "공통영어2 1-2과",
+      sourceRef: "YBM박 공통영어2 1-2과",
+      examScope: "고1 2학기 중간",
+    },
+    {
+      id: "g1_s2_final",
+      label: "고1 2학기 기말",
+      bookId: "common_english_2",
+      lessonNos: [3, 4],
+      grade: "g1",
+      preset: "g1",
+      title: "공통영어2 3-4과",
+      sourceRef: "YBM박 공통영어2 3-4과",
+      examScope: "고1 2학기 기말",
+    },
+    {
+      id: "g2_s1_mid",
+      label: "고2 1학기 중간",
+      bookId: "english_1",
+      lessonNos: [1, 2],
+      grade: "g2",
+      preset: "g2",
+      title: "영어1 1-2과",
+      sourceRef: "YBM박 영어1 1-2과",
+      examScope: "고2 1학기 중간",
+    },
+    {
+      id: "g2_s1_final",
+      label: "고2 1학기 기말",
+      bookId: "english_1",
+      lessonNos: [3, 4, 5],
+      grade: "g2",
+      preset: "g2",
+      title: "영어1 3-5과",
+      sourceRef: "YBM박 영어1 3-5과",
+      examScope: "고2 1학기 기말",
+    },
+    {
+      id: "g2_s2_mid",
+      label: "고2 2학기 중간",
+      bookId: "english_2",
+      lessonNos: [1, 2],
+      grade: "g2",
+      preset: "g2",
+      title: "영어2 1-2과",
+      sourceRef: "YBM박 영어2 1-2과",
+      examScope: "고2 2학기 중간",
+    },
+    {
+      id: "g2_s2_final",
+      label: "고2 2학기 기말",
+      bookId: "english_2",
+      lessonNos: [3, 4, 5],
+      grade: "g2",
+      preset: "g2",
+      title: "영어2 3-5과",
+      sourceRef: "YBM박 영어2 3-5과",
+      examScope: "고2 2학기 기말",
+    },
+  ];
+
+  const GENRE_PRESETS = {
+    all: {
+      label: "전체 자동 생성",
+      types: null,
+    },
+    school_body: {
+      label: "광영여고 본문 기본팩",
+      types: ["gist", "content_false", "context_vocab", "grammar_mc", "grammar_edit", "order", "summary_short"],
+    },
+    grammar: {
+      label: "어법만",
+      types: ["grammar_mc", "grammar_edit"],
+    },
+    vocab: {
+      label: "어휘/문맥만",
+      types: ["context_vocab"],
+    },
+    structure: {
+      label: "순서/삽입만",
+      types: ["order", "insertion"],
+    },
+    short_answer: {
+      label: "단답형만",
+      types: ["grammar_edit", "summary_short", "condition_writing"],
+    },
+    objective: {
+      label: "객관식만",
+      types: ["gist", "content_false", "context_vocab", "grammar_mc", "order", "insertion"],
+    },
+  };
+
   document.addEventListener("DOMContentLoaded", () => {
     init();
   });
@@ -32,9 +154,12 @@
     await loadPrivateTextbookLibrary();
     hydrate();
     initTextbookPicker();
+    initRangePicker();
     initTypePicker();
     initBankTypeFilter();
     bindEvents();
+    applySelectedRange({ loadBody: true, silent: true });
+    applyGenrePreset({ silent: true });
     renderAll();
   }
 
@@ -65,14 +190,20 @@
   function bindEvents() {
     $("runAnalyze").addEventListener("click", runAnalyze);
     $("runAnalyzeTop").addEventListener("click", runAnalyze);
-    $("loadTextbookPassage").addEventListener("click", loadSelectedTextbookPassage);
+    $("loadTextbookPassage").addEventListener("click", () => applySelectedRange({ loadBody: true }));
     $("importTextbookLibrary").addEventListener("change", importTextbookLibrary);
     $("clearTextbookLibrary").addEventListener("click", clearStoredTextbookLibrary);
+    $("rangePreset").addEventListener("change", () => applySelectedRange({ loadBody: true }));
+    $("genrePreset").addEventListener("change", () => applyGenrePreset());
     $("textbookBook").addEventListener("change", () => {
       syncLessonOptions();
       syncSelectedLesson({ loadBody: true });
+      renderRangeSummary();
     });
-    $("textbookLesson").addEventListener("change", () => syncSelectedLesson({ loadBody: true }));
+    $("textbookLesson").addEventListener("change", () => {
+      syncSelectedLesson({ loadBody: true });
+      renderRangeSummary();
+    });
     $("runGenerate").addEventListener("click", runGenerate);
     $("saveGenerated").addEventListener("click", saveGenerated);
     $("selectAllTypes").addEventListener("click", selectAllTypes);
@@ -153,6 +284,8 @@
       localStorage.setItem(TEXTBOOK_LIBRARY_STORAGE_KEY, source);
       updateLibraryState("browser");
       initTextbookPicker();
+      initRangePicker();
+      applySelectedRange({ loadBody: true, silent: true });
       renderAll();
       showToast(`본문 라이브러리를 연결했습니다. ${libraryState.readyLessonCount}개 단원을 사용할 수 있습니다.`);
     } catch (error) {
@@ -168,6 +301,8 @@
     delete window.KYTextbookLibrary;
     updateLibraryState("catalog");
     initTextbookPicker();
+    initRangePicker();
+    applySelectedRange({ loadBody: true, silent: true });
     renderAll();
     showToast("브라우저에 저장된 본문 라이브러리를 해제했습니다.");
   }
@@ -186,7 +321,122 @@
       bookSelect.append(create("option", { value: "", text: "교과서 라이브러리 없음" }));
     }
     syncLessonOptions();
-    syncSelectedLesson({ loadBody: true, silent: true });
+    syncSelectedLesson({ loadBody: false, silent: true });
+  }
+
+  function initRangePicker() {
+    const picker = $("rangePreset");
+    if (!picker) return;
+    const current = picker.value || "g1_s1_mid";
+    clear(picker);
+    RANGE_PRESETS.forEach((range) => {
+      const status = rangeAvailability(range);
+      const suffix = status.ready === status.total && status.total ? "" : ` · 본문 ${status.ready}/${status.total}`;
+      picker.append(create("option", { value: range.id, text: `${range.label}${suffix}` }));
+    });
+    if (RANGE_PRESETS.some((range) => range.id === current)) {
+      picker.value = current;
+    }
+    renderRangeSummary();
+  }
+
+  function selectedRange() {
+    return RANGE_PRESETS.find((range) => range.id === $("rangePreset").value) || RANGE_PRESETS[0];
+  }
+
+  function getBookById(bookId) {
+    return (textbookLibrary().books || []).find((book) => book.id === bookId) || null;
+  }
+
+  function rangeLessons(range = selectedRange()) {
+    const book = getBookById(range.bookId);
+    if (!book) return { book: null, lessons: [] };
+    const lessons = (book.lessons || []).filter((lesson) => range.lessonNos.includes(Number(lesson.lessonNo)));
+    return { book, lessons };
+  }
+
+  function rangeAvailability(range = selectedRange()) {
+    const { lessons } = rangeLessons(range);
+    return {
+      total: range.lessonNos.length,
+      found: lessons.length,
+      ready: lessons.filter((lesson) => lesson.body).length,
+    };
+  }
+
+  function applySelectedRange(options = {}) {
+    const { loadBody = false, silent = false } = options;
+    const range = selectedRange();
+    const { book, lessons } = rangeLessons(range);
+    if (!book) {
+      $("passageText").value = "";
+      renderRangeSummary();
+      if (!silent) showToast("해당 범위의 교재가 아직 등록되지 않았습니다.");
+      return;
+    }
+
+    $("textbookBook").value = book.id;
+    syncLessonOptions();
+    const firstLesson = lessons[0] || (book.lessons || [])[0];
+    if (firstLesson) $("textbookLesson").value = firstLesson.id;
+
+    $("grade").value = range.grade || book.grade || "g1";
+    $("preset").value = range.preset || book.preset || book.grade || "g1";
+    $("sourceType").value = "textbook";
+    $("title").value = range.title || book.label;
+    $("sourceRef").value = range.sourceRef || `YBM박 ${book.course}`;
+    $("examScope").value = range.examScope || book.examScope || "";
+    $("mockTitle").value = `${range.examScope || range.label} 동형 1회`;
+
+    if (loadBody) {
+      const readyLessons = lessons.filter((lesson) => lesson.body);
+      if (!readyLessons.length) {
+        $("passageText").value = "";
+        if (!silent) showToast("이 범위의 본문 전문이 아직 연결되지 않았습니다. 본문 라이브러리를 먼저 연결하세요.");
+      } else {
+        $("passageText").value = composeRangePassage(book, readyLessons);
+        if (!silent) showToast(`${range.label} 본문 ${readyLessons.length}개 단원을 불러왔습니다.`);
+      }
+    }
+
+    renderRangeSummary();
+    renderStatus();
+  }
+
+  function composeRangePassage(book, lessons) {
+    return lessons
+      .map((lesson) => {
+        const heading = `[${book.label} ${lesson.lessonNo}과] ${lesson.title || ""}`.trim();
+        return `${heading}\n\n${lesson.body}`;
+      })
+      .join("\n\n");
+  }
+
+  function renderRangeSummary() {
+    const wrap = $("rangeSummary");
+    if (!wrap) return;
+    const range = selectedRange();
+    const { book, lessons } = rangeLessons(range);
+    clear(wrap);
+    const head = create("div", { className: "range-summary-head" });
+    const status = rangeAvailability(range);
+    head.append(
+      create("strong", { text: range.label }),
+      create("span", { text: book ? `${book.label} · ${range.lessonNos.join(", ")}과 · 본문 ${status.ready}/${status.total}` : "교재 미등록" }),
+    );
+    wrap.append(head);
+    const list = create("div", { className: "range-lesson-list" });
+    range.lessonNos.forEach((lessonNo) => {
+      const lesson = lessons.find((item) => Number(item.lessonNo) === Number(lessonNo));
+      const item = create("div", { className: `range-lesson ${lesson?.body ? "ready" : "missing"}` });
+      item.append(
+        create("span", { text: `${lessonNo}과` }),
+        create("strong", { text: lesson?.title || "단원 정보 없음" }),
+        create("em", { text: lesson?.body ? "본문 준비" : "본문 필요" }),
+      );
+      list.append(item);
+    });
+    wrap.append(list);
   }
 
   function selectedBook() {
@@ -263,6 +513,16 @@
       label.append(input, span);
       picker.append(label);
     }
+  }
+
+  function applyGenrePreset(options = {}) {
+    const { silent = false } = options;
+    const selected = GENRE_PRESETS[$("genrePreset").value] || GENRE_PRESETS.all;
+    const targetTypes = selected.types ? new Set(selected.types) : new Set(Object.keys(KYEngine.TYPE_META));
+    document.querySelectorAll("#typePicker input").forEach((input) => {
+      input.checked = targetTypes.has(input.value);
+    });
+    if (!silent) showToast(`${selected.label} 유형으로 맞췄습니다.`);
   }
 
   function initBankTypeFilter() {

@@ -443,10 +443,111 @@ textarea:focus {
   font-weight: 880;
 }
 
+#rangePreset,
 #textbookBook,
 #textbookLesson {
   min-height: 46px;
   font-weight: 820;
+}
+
+.range-main span {
+  color: var(--engine-accent-dark);
+  font-size: 13px;
+}
+
+.range-main select {
+  min-height: 58px;
+  border-color: #b8c9e5;
+  background:
+    linear-gradient(180deg, #ffffff 0%, #f5f9ff 100%);
+  color: #111827;
+  font-size: 19px;
+  font-weight: 880;
+}
+
+.range-summary {
+  border: 1px solid #d7e2f2;
+  border-radius: var(--engine-radius);
+  background: #fbfdff;
+  color: var(--engine-muted);
+  padding: 14px;
+}
+
+.range-summary-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.range-summary-head strong,
+.range-summary-head span {
+  display: block;
+}
+
+.range-summary-head strong {
+  color: var(--engine-ink);
+  font-size: 16px;
+  font-weight: 880;
+}
+
+.range-summary-head span {
+  color: var(--engine-muted);
+  font-size: 12px;
+  font-weight: 780;
+  text-align: right;
+}
+
+.range-lesson-list {
+  display: grid;
+  gap: 8px;
+}
+
+.range-lesson {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--engine-line);
+  border-radius: 12px;
+  background: #fff;
+  padding: 10px;
+}
+
+.range-lesson span,
+.range-lesson em {
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 840;
+}
+
+.range-lesson span {
+  color: var(--engine-accent-dark);
+}
+
+.range-lesson strong {
+  overflow: hidden;
+  color: #263348;
+  font-size: 13px;
+  font-weight: 820;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.range-lesson em {
+  border-radius: 999px;
+  padding: 4px 7px;
+}
+
+.range-lesson.ready em {
+  background: #e9f8f3;
+  color: var(--engine-success);
+}
+
+.range-lesson.missing em {
+  background: #fff7e8;
+  color: var(--engine-warning);
 }
 
 .advanced-meta {
@@ -464,7 +565,7 @@ textarea:focus {
   padding: 12px;
 }
 
-.advanced-meta div {
+.advanced-meta > div {
   display: grid;
   gap: 13px;
   border-top: 1px solid var(--engine-line);
@@ -583,6 +684,15 @@ textarea {
 .generation-controls {
   grid-template-columns: 160px minmax(220px, 1fr);
   margin-bottom: 14px;
+}
+
+.type-advanced {
+  grid-column: 1 / -1;
+}
+
+.type-picker-actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .type-picker {
