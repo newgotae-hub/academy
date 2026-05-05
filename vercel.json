@@ -1,0 +1,47 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/site/engine.html",
+      "permanent": false
+    },
+    {
+      "source": "/engine",
+      "destination": "/site/engine.html",
+      "permanent": false
+    },
+    {
+      "source": "/analysis",
+      "destination": "/site/index.html",
+      "permanent": false
+    },
+    {
+      "source": "/integrated",
+      "destination": "/site/integrated.html",
+      "permanent": false
+    },
+    {
+      "source": "/g2",
+      "destination": "/site/g2.html",
+      "permanent": false
+    },
+    {
+      "source": "/elite",
+      "destination": "/site/elite.html",
+      "permanent": false
+    }
+  ],
+  "headers": [
+    {
+      "source": "/site/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
+}
