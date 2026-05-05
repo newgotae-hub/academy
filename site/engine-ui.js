@@ -1,5 +1,6 @@
 (function () {
   const STORAGE_KEY = "ky-transform-engine:v1";
+  const TEXTBOOK_LIBRARY_STORAGE_KEY = "ky-transform-engine:textbook-library:v1";
 
   const state = {
     analysis: null,
@@ -7,6 +8,14 @@
     bank: [],
     mock: null,
     savedAt: null,
+  };
+
+  const libraryState = {
+    source: "catalog",
+    loadedAt: null,
+    bookCount: 0,
+    lessonCount: 0,
+    readyLessonCount: 0,
   };
 
   const $ = (id) => document.getElementById(id);
@@ -31,13 +40,23 @@
 
   async function loadPrivateTextbookLibrary() {
     if (window.KYTextbookLibrary) return;
+    const stored = localStorage.getItem(TEXTBOOK_LIBRARY_STORAGE_KEY);
+    if (stored) {
+      try {
+        window.KYTextbookLibrary = parseTextbookLibrarySource(stored);
+        updateLibraryState("browser");
+        return;
+      } catch (error) {
+        localStorage.removeItem(TEXTBOOK_LIBRARY_STORAGE_KEY);
+        console.warn("Stored textbook library was invalid and has been cleared.", error);
+      }
+    }
     try {
       const response = await fetch("./textbook-private.js", { cache: "no-store" });
       if (!response.ok) return;
       const source = await response.text();
-      const script = document.createElement("script");
-      script.textContent = source;
-      document.head.append(script);
+      window.KYTextbookLibrary = parseTextbookLibrarySource(source);
+      updateLibraryState("deployment");
     } catch (error) {
       console.info("Private textbook library is not available in this deployment.", error);
     }
@@ -47,6 +66,8 @@
     $("runAnalyze").addEventListener("click", runAnalyze);
     $("runAnalyzeTop").addEventListener("click", runAnalyze);
     $("loadTextbookPassage").addEventListener("click", loadSelectedTextbookPassage);
+    $("importTextbookLibrary").addEventListener("change", importTextbookLibrary);
+    $("clearTextbookLibrary").addEventListener("click", clearStoredTextbookLibrary);
     $("textbookBook").addEventListener("change", () => {
       syncLessonOptions();
       syncSelectedLesson({ loadBody: true });
@@ -79,7 +100,80 @@
     return window.KYTextbookLibrary || window.KYTextbookCatalog || { books: [] };
   }
 
+  function parseTextbookLibrarySource(source) {
+    const text = String(source || "").trim();
+    let library = null;
+    if (text.startsWith("{")) {
+      library = JSON.parse(text);
+    } else {
+      const match = text.match(/window\.KYTextbookLibrary\s*=\s*({[\s\S]*});\s*\}\)\(\);?\s*$/);
+      if (!match) {
+        throw new Error("KYTextbookLibrary assignment was not found.");
+      }
+      library = JSON.parse(match[1]);
+    }
+    validateTextbookLibrary(library);
+    return library;
+  }
+
+  function validateTextbookLibrary(library) {
+    if (!library || !Array.isArray(library.books)) {
+      throw new Error("Textbook library must contain a books array.");
+    }
+    const lessonCount = library.books.reduce((sum, book) => sum + (Array.isArray(book.lessons) ? book.lessons.length : 0), 0);
+    const readyLessonCount = library.books.reduce(
+      (sum, book) => sum + (Array.isArray(book.lessons) ? book.lessons.filter((lesson) => lesson.body).length : 0),
+      0,
+    );
+    if (!lessonCount || !readyLessonCount) {
+      throw new Error("Textbook library does not include usable lesson bodies.");
+    }
+  }
+
+  function updateLibraryState(source) {
+    const library = textbookLibrary();
+    const books = Array.isArray(library.books) ? library.books : [];
+    libraryState.source = source || (window.KYTextbookLibrary ? "deployment" : "catalog");
+    libraryState.loadedAt = new Date().toISOString();
+    libraryState.bookCount = books.length;
+    libraryState.lessonCount = books.reduce((sum, book) => sum + (Array.isArray(book.lessons) ? book.lessons.length : 0), 0);
+    libraryState.readyLessonCount = books.reduce(
+      (sum, book) => sum + (Array.isArray(book.lessons) ? book.lessons.filter((lesson) => lesson.body).length : 0),
+      0,
+    );
+  }
+
+  async function importTextbookLibrary(event) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    try {
+      const source = await file.text();
+      const library = parseTextbookLibrarySource(source);
+      window.KYTextbookLibrary = library;
+      localStorage.setItem(TEXTBOOK_LIBRARY_STORAGE_KEY, source);
+      updateLibraryState("browser");
+      initTextbookPicker();
+      renderAll();
+      showToast(`본문 라이브러리를 연결했습니다. ${libraryState.readyLessonCount}개 단원을 사용할 수 있습니다.`);
+    } catch (error) {
+      console.error(error);
+      showToast("본문 라이브러리를 읽지 못했습니다. build_textbook_private_library.py로 만든 파일인지 확인하세요.");
+    } finally {
+      event.target.value = "";
+    }
+  }
+
+  function clearStoredTextbookLibrary() {
+    localStorage.removeItem(TEXTBOOK_LIBRARY_STORAGE_KEY);
+    delete window.KYTextbookLibrary;
+    updateLibraryState("catalog");
+    initTextbookPicker();
+    renderAll();
+    showToast("브라우저에 저장된 본문 라이브러리를 해제했습니다.");
+  }
+
   function initTextbookPicker() {
+    updateLibraryState(window.KYTextbookLibrary ? libraryState.source : "catalog");
     const library = textbookLibrary();
     const bookSelect = $("textbookBook");
     clear(bookSelect);
@@ -391,11 +485,26 @@
   }
 
   function renderAll() {
+    renderLibraryStatus();
     renderStatus();
     renderAnalysis();
     renderQuestions();
     renderBank();
     renderMock();
+  }
+
+  function renderLibraryStatus() {
+    const status = $("textbookLibraryStatus");
+    if (!status) return;
+    if (libraryState.readyLessonCount > 0) {
+      const sourceLabel =
+        libraryState.source === "browser" ? "브라우저 저장됨" : libraryState.source === "deployment" ? "배포 포함" : "연결됨";
+      status.textContent = `${sourceLabel} · ${libraryState.bookCount}권 · 본문 ${libraryState.readyLessonCount}단원`;
+      status.dataset.state = "ready";
+      return;
+    }
+    status.textContent = "카탈로그만 연결됨 · 본문 파일 필요";
+    status.dataset.state = "empty";
   }
 
   function renderStatus() {

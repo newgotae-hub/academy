@@ -317,6 +317,68 @@ select:focus-visible {
   font-weight: 860;
 }
 
+.library-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 20px;
+  border: 1px solid #d7e2f2;
+  border-radius: var(--engine-radius);
+  background: linear-gradient(135deg, #f8fbff 0%, #eef5ff 100%);
+  padding: 15px 16px;
+}
+
+.library-strip span,
+.library-strip strong,
+.library-strip p {
+  display: block;
+}
+
+.library-strip span {
+  color: var(--engine-muted);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.library-strip strong {
+  margin-top: 5px;
+  color: var(--engine-ink);
+  font-size: 16px;
+  font-weight: 880;
+}
+
+.library-strip strong[data-state="ready"] {
+  color: var(--engine-success);
+}
+
+.library-strip strong[data-state="empty"] {
+  color: var(--engine-warning);
+}
+
+.library-strip p {
+  margin: 6px 0 0;
+  color: var(--engine-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.library-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.library-actions input[type="file"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 .workspace-grid {
   display: grid;
   grid-template-columns: minmax(300px, 410px) minmax(0, 1fr);
@@ -779,12 +841,14 @@ textarea {
   }
 
   .engine-top,
-  .panel-head {
+  .panel-head,
+  .library-strip {
     display: grid;
   }
 
   .top-actions,
-  .panel-actions {
+  .panel-actions,
+  .library-actions {
     justify-content: flex-start;
   }
 
