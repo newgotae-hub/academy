@@ -634,6 +634,57 @@ textarea {
   gap: 12px;
 }
 
+.source-passage {
+  border: 1px solid #c9d7eb;
+  border-radius: var(--engine-radius);
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(23, 32, 51, 0.06);
+  overflow: hidden;
+}
+
+.source-passage summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+  background: linear-gradient(180deg, #f8fbff, #edf4ff);
+  padding: 14px 16px;
+}
+
+.source-passage summary::marker {
+  color: var(--engine-accent);
+}
+
+.source-passage summary strong {
+  color: var(--engine-ink);
+  font-size: 15px;
+  font-weight: 880;
+}
+
+.source-passage summary span {
+  color: var(--engine-muted);
+  font-size: 12px;
+  font-weight: 760;
+}
+
+.source-passage-body {
+  max-height: 420px;
+  overflow: auto;
+  padding: 16px 18px;
+}
+
+.source-passage-body p {
+  margin: 0 0 13px;
+  color: #243044;
+  font-size: 14px;
+  line-height: 1.72;
+}
+
+.source-passage-body p:last-child {
+  margin-bottom: 0;
+}
+
 .question-card {
   padding: 17px;
 }

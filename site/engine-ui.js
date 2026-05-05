@@ -593,7 +593,63 @@
       return;
     }
     container.className = container.id === "mockPreview" ? "mock-preview" : "question-list";
-    items.forEach((item, index) => container.append(renderQuestionCard(item, index)));
+    const groups = groupItemsBySource(items);
+    let index = 0;
+    groups.forEach((group) => {
+      container.append(renderSourcePassage(group));
+      group.items.forEach((item) => {
+        container.append(renderQuestionCard(item, index));
+        index += 1;
+      });
+    });
+  }
+
+  function groupItemsBySource(items) {
+    const groups = [];
+    const byKey = new Map();
+    items.forEach((item) => {
+      const key = item.sourceId || item.sourceTitle || item.sourceRef || "unknown";
+      if (!byKey.has(key)) {
+        const group = {
+          key,
+          title: item.sourceTitle || item.sourceRef || "본문",
+          sourceRef: item.sourceRef || "",
+          passage: passageForItem(item),
+          items: [],
+        };
+        byKey.set(key, group);
+        groups.push(group);
+      }
+      byKey.get(key).items.push(item);
+    });
+    return groups;
+  }
+
+  function passageForItem(item) {
+    if (item.sourcePassage) return item.sourcePassage;
+    if (state.analysis && item.sourceId && item.sourceId === state.analysis.sourceId) {
+      return (state.analysis.units || []).map((unit) => unit.text).join("\n\n");
+    }
+    return "";
+  }
+
+  function renderSourcePassage(group) {
+    const details = create("details", { className: "source-passage" });
+    details.open = true;
+    const summary = create("summary");
+    summary.append(
+      create("strong", { text: group.title || "본문" }),
+      create("span", { text: group.sourceRef ? ` · ${group.sourceRef}` : "" }),
+    );
+    const body = create("div", { className: "source-passage-body" });
+    const passage = group.passage || "저장된 본문이 없습니다. 이 문항은 이전 버전에서 생성되어 본문 전문을 포함하지 않을 수 있습니다.";
+    passage
+      .split(/\n{2,}/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean)
+      .forEach((paragraph) => body.append(create("p", { text: paragraph })));
+    details.append(summary, body);
+    return details;
   }
 
   function renderQuestionCard(item, index) {
@@ -647,7 +703,7 @@
     const table = create("table");
     const thead = create("thead");
     const headerRow = create("tr");
-    ["유형", "출처", "발문", "정답", "품질", "관리"].forEach((text) => headerRow.append(create("th", { text })));
+    ["유형", "출처", "본문", "발문", "정답", "품질", "관리"].forEach((text) => headerRow.append(create("th", { text })));
     thead.append(headerRow);
     const tbody = create("tbody");
     filtered.forEach((item) => {
@@ -655,6 +711,7 @@
       row.append(
         create("td", { text: item.typeLabel || item.type || "" }),
         create("td", { text: item.sourceTitle || item.sourceRef || "" }),
+        create("td", { text: item.sourcePassage ? "포함" : "없음" }),
         create("td", { className: "mini", text: item.stem || item.prompt || "" }),
         create("td", { text: Array.isArray(item.answer) ? item.answer.join(" / ") : String(item.answer ?? "") }),
         create("td", { text: item.quality?.status || "" }),

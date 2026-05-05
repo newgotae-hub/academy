@@ -387,6 +387,7 @@
       item.sourceType = analysis.sourceType;
       item.sourceRef = analysis.sourceRef;
       item.examScope = analysis.examScope;
+      item.sourcePassage = analysis.units.map((unit) => unit.text).join("\n\n");
       item.createdAt = new Date().toISOString();
       item.quality = validateItem(item);
       generated.push(item);
@@ -699,6 +700,7 @@
       "sourceType",
       "sourceRef",
       "examScope",
+      "sourcePassage",
       "stem",
       "prompt",
       "options",
