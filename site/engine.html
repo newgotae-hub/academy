@@ -10,8 +10,8 @@
   <body class="engine-body">
     <aside class="engine-side" aria-label="KY Transform Engine navigation">
       <a class="engine-brand" href="./elite.html">
-        <span>KY</span>
-        <strong>Transform Engine</strong>
+        <span>AC</span>
+        <strong>Academy Studio</strong>
       </a>
       <nav>
         <a href="#workspace">교과서 선택</a>
@@ -22,16 +22,16 @@
         <a href="#export">내보내기</a>
       </nav>
       <div class="side-note">
-        <strong>Local-first</strong>
-        <span>원문은 브라우저 작업 상태에만 보관하고, 기본 export는 문항과 근거 메타데이터 중심으로 처리합니다.</span>
+        <strong>Private workspace</strong>
+        <span>교과서 본문, 문제은행, 출력 세트는 로컬 작업 상태를 기준으로 관리합니다.</span>
       </div>
     </aside>
 
     <main class="engine-main">
       <header class="engine-top">
         <div>
-          <p class="eyebrow">Kwangyoung Console</p>
-          <h1>변형문제 출제머신</h1>
+          <p class="eyebrow">Kwangyoung Academy Console</p>
+          <h1>본문 변형문제 제작실</h1>
         </div>
         <div class="top-actions">
           <a class="secondary" href="./integrated.html">분석 대시보드</a>
@@ -87,42 +87,47 @@
               <span>단원 제목</span>
               <select id="textbookLesson"></select>
             </label>
-            <label>
-              <span>학년</span>
-              <select id="grade">
-                <option value="g1">고1</option>
-                <option value="g2">고2</option>
-              </select>
-            </label>
-            <label>
-              <span>프리셋</span>
-              <select id="preset">
-                <option value="g1">광영여고 고1</option>
-                <option value="g2">광영여고 고2</option>
-              </select>
-            </label>
-            <label>
-              <span>출처 분류</span>
-              <select id="sourceType">
-                <option value="textbook">교과서 본문</option>
-                <option value="mock">학평 직접 변형</option>
-                <option value="school_passage">학교/수업지문</option>
-                <option value="literature">작품지문</option>
-                <option value="vocab">어휘 자료</option>
-              </select>
-            </label>
-            <label>
-              <span>지문명</span>
-              <input id="title" type="text" placeholder="예: Lesson 1 핵심 본문" />
-            </label>
-            <label>
-              <span>내부 출처</span>
-              <input id="sourceRef" type="text" placeholder="예: 공통영어1 1과 / 2023-3 고1 31번" />
-            </label>
-            <label>
-              <span>시험범위</span>
-              <input id="examScope" type="text" placeholder="예: 고1 1학기 중간" />
-            </label>
+            <details class="advanced-meta">
+              <summary>고급 설정</summary>
+              <div>
+                <label>
+                  <span>학년</span>
+                  <select id="grade">
+                    <option value="g1">고1</option>
+                    <option value="g2">고2</option>
+                  </select>
+                </label>
+                <label>
+                  <span>프리셋</span>
+                  <select id="preset">
+                    <option value="g1">광영여고 고1</option>
+                    <option value="g2">광영여고 고2</option>
+                  </select>
+                </label>
+                <label>
+                  <span>출처 분류</span>
+                  <select id="sourceType">
+                    <option value="textbook">교과서 본문</option>
+                    <option value="mock">학평 직접 변형</option>
+                    <option value="school_passage">학교/수업지문</option>
+                    <option value="literature">작품지문</option>
+                    <option value="vocab">어휘 자료</option>
+                  </select>
+                </label>
+                <label>
+                  <span>지문명</span>
+                  <input id="title" type="text" placeholder="예: Lesson 1 핵심 본문" />
+                </label>
+                <label>
+                  <span>내부 출처</span>
+                  <input id="sourceRef" type="text" placeholder="예: 공통영어1 1과 / 2023-3 고1 31번" />
+                </label>
+                <label>
+                  <span>시험범위</span>
+                  <input id="examScope" type="text" placeholder="예: 고1 1학기 중간" />
+                </label>
+              </div>
+            </details>
           </form>
 
           <label class="paste-box">
