@@ -11,24 +11,47 @@
 
   const $ = (id) => document.getElementById(id);
 
-  document.addEventListener("DOMContentLoaded", init);
+  document.addEventListener("DOMContentLoaded", () => {
+    init();
+  });
 
-  function init() {
+  async function init() {
     if (!window.KYEngine) {
       showToast("엔진 로드에 실패했습니다. engine-core.js를 확인하세요.");
       return;
     }
+    await loadPrivateTextbookLibrary();
     hydrate();
+    initTextbookPicker();
     initTypePicker();
     initBankTypeFilter();
     bindEvents();
     renderAll();
   }
 
+  async function loadPrivateTextbookLibrary() {
+    if (window.KYTextbookLibrary) return;
+    try {
+      const response = await fetch("./textbook-private.js", { cache: "no-store" });
+      if (!response.ok) return;
+      const source = await response.text();
+      const script = document.createElement("script");
+      script.textContent = source;
+      document.head.append(script);
+    } catch (error) {
+      console.info("Private textbook library is not available in this deployment.", error);
+    }
+  }
+
   function bindEvents() {
     $("runAnalyze").addEventListener("click", runAnalyze);
     $("runAnalyzeTop").addEventListener("click", runAnalyze);
-    $("loadSample").addEventListener("click", loadSample);
+    $("loadTextbookPassage").addEventListener("click", loadSelectedTextbookPassage);
+    $("textbookBook").addEventListener("change", () => {
+      syncLessonOptions();
+      syncSelectedLesson({ loadBody: true });
+    });
+    $("textbookLesson").addEventListener("change", () => syncSelectedLesson({ loadBody: true }));
     $("runGenerate").addEventListener("click", runGenerate);
     $("saveGenerated").addEventListener("click", saveGenerated);
     $("selectAllTypes").addEventListener("click", selectAllTypes);
@@ -50,6 +73,90 @@
       renderStatus();
     });
     $("preset").addEventListener("change", renderStatus);
+  }
+
+  function textbookLibrary() {
+    return window.KYTextbookLibrary || window.KYTextbookCatalog || { books: [] };
+  }
+
+  function initTextbookPicker() {
+    const library = textbookLibrary();
+    const bookSelect = $("textbookBook");
+    clear(bookSelect);
+    const books = Array.isArray(library.books) ? library.books : [];
+    books.forEach((book) => {
+      const availability = book.availability === "ready" ? "" : " · 본문 미탑재";
+      bookSelect.append(create("option", { value: book.id, text: `${book.label} (${book.gradeLabel} ${book.semester})${availability}` }));
+    });
+    if (!books.length) {
+      bookSelect.append(create("option", { value: "", text: "교과서 라이브러리 없음" }));
+    }
+    syncLessonOptions();
+    syncSelectedLesson({ loadBody: true, silent: true });
+  }
+
+  function selectedBook() {
+    const library = textbookLibrary();
+    return (library.books || []).find((book) => book.id === $("textbookBook").value) || null;
+  }
+
+  function selectedLesson(book = selectedBook()) {
+    if (!book) return null;
+    return (book.lessons || []).find((lesson) => lesson.id === $("textbookLesson").value) || null;
+  }
+
+  function syncLessonOptions() {
+    const lessonSelect = $("textbookLesson");
+    clear(lessonSelect);
+    const book = selectedBook();
+    const lessons = book?.lessons || [];
+    lessons.forEach((lesson) => {
+      const bodyMark = lesson.body ? "" : " · 본문 없음";
+      lessonSelect.append(create("option", { value: lesson.id, text: `${lesson.lessonNo}과 · ${lesson.title}${bodyMark}` }));
+    });
+    if (!lessons.length) {
+      lessonSelect.append(create("option", { value: "", text: "등록된 단원이 없습니다" }));
+    }
+  }
+
+  function syncSelectedLesson(options = {}) {
+    const { loadBody = false, silent = false } = options;
+    const book = selectedBook();
+    const lesson = selectedLesson(book);
+    if (!book || !lesson) return;
+
+    $("grade").value = book.grade || "g1";
+    $("preset").value = book.preset || book.grade || "g1";
+    $("sourceType").value = "textbook";
+    $("title").value = lesson.title || "";
+    $("sourceRef").value = lesson.sourceRef || `YBM박 ${book.course} ${lesson.lessonNo}과`;
+    $("examScope").value = book.examScope || `${book.gradeLabel || ""} ${book.semester || ""}`.trim();
+
+    if (loadBody) {
+      loadSelectedTextbookPassage({ silent });
+    } else {
+      renderStatus();
+    }
+  }
+
+  function loadSelectedTextbookPassage(options = {}) {
+    const { silent = false } = options;
+    const book = selectedBook();
+    const lesson = selectedLesson(book);
+    if (!book || !lesson) {
+      if (!silent) showToast("책과 단원을 먼저 선택하세요.");
+      return;
+    }
+    syncSelectedLesson({ loadBody: false });
+    if (!lesson.body) {
+      $("passageText").value = "";
+      if (!silent) {
+        showToast("본문 전문 파일이 아직 연결되지 않았습니다. 로컬에서 textbook-private.js를 생성해야 합니다.");
+      }
+      return;
+    }
+    $("passageText").value = lesson.body;
+    if (!silent) showToast(`${book.label} ${lesson.lessonNo}과 본문을 불러왔습니다.`);
   }
 
   function initTypePicker() {
@@ -102,21 +209,6 @@
       examScope: $("examScope").value.trim(),
       text: $("passageText").value,
     };
-  }
-
-  function loadSample() {
-    $("grade").value = "g1";
-    $("preset").value = "g1";
-    $("sourceType").value = "textbook";
-    $("title").value = "Sample Transform Passage";
-    $("sourceRef").value = "샘플 원문";
-    $("examScope").value = "광영여고 변형 테스트";
-    $("passageText").value = [
-      "When students review a passage, they often try to memorize every sentence. However, this habit can hide the structure of the passage. A better reader first asks why each paragraph exists and how it moves the writer's idea forward.",
-      "For example, one paragraph may introduce a problem, while another paragraph may show evidence. If students mark those paragraph roles, they can predict which sentence will become a grammar question, a summary blank, or an insertion question.",
-      "Therefore, strong test preparation is not just translation practice. It is a process of rebuilding the original text into several school-style questions and checking whether every answer has clear textual evidence.",
-    ].join("\n\n");
-    runAnalyze();
   }
 
   function runAnalyze() {

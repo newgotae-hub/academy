@@ -25,6 +25,22 @@ Then open:
 http://127.0.0.1:4177/engine.html
 ```
 
+## Local Textbook Library
+
+The public repository keeps textbook body text out of Git. Generate the local private library from the HWP files before using the one-click textbook selector:
+
+```powershell
+python tools\build_textbook_private_library.py
+```
+
+This creates:
+
+```text
+site/textbook-private.js
+```
+
+That file is ignored by Git. The UI still ships with `site/textbook-catalog.js`, so the book and lesson selector works on Vercel, but full body auto-fill only works where `textbook-private.js` is present or where the deployment is intentionally protected and includes that file.
+
 ## Data Policy
 
 Generated exams, answer keys, PDF/DOCX packages, extracted school materials, and local analysis files are intentionally ignored by Git.

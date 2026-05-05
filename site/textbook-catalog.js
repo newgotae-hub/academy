@@ -1,0 +1,78 @@
+(function () {
+  window.KYTextbookCatalog = {
+    schemaVersion: "ky-textbook-catalog@1",
+    publisher: {
+      id: "ybm_park",
+      label: "YBM박",
+      fixed: true,
+    },
+    books: [
+      {
+        id: "common_english_1",
+        label: "공통영어1",
+        course: "공통영어1",
+        grade: "g1",
+        gradeLabel: "고1",
+        semester: "1학기",
+        preset: "g1",
+        examScope: "고1 1학기 중간/기말",
+        availability: "private_body_required",
+        lessons: [
+          { id: "ce1_l1", lessonNo: 1, title: "The Magic of Morning Pages" },
+          { id: "ce1_l2", lessonNo: 2, title: "The Mind of an Octopus" },
+          { id: "ce1_l3", lessonNo: 3, title: "English or Englishes?" },
+          { id: "ce1_l4", lessonNo: 4, title: "Artificial Intelligence and the Arts" },
+        ],
+      },
+      {
+        id: "common_english_2",
+        label: "공통영어2",
+        course: "공통영어2",
+        grade: "g1",
+        gradeLabel: "고1",
+        semester: "2학기",
+        preset: "g1",
+        examScope: "고1 2학기 중간/기말",
+        availability: "private_body_required",
+        lessons: [
+          { id: "ce2_l1", lessonNo: 1, title: "Warning: Fake News Alert!" },
+          { id: "ce2_l2", lessonNo: 2, title: "Alyssa, shush!" },
+          { id: "ce2_l3", lessonNo: 3, title: "Resilience: The Power to Overcome" },
+          { id: "ce2_l4", lessonNo: 4, title: "Science for All" },
+        ],
+      },
+      {
+        id: "english_1",
+        label: "영어1",
+        course: "영어1",
+        grade: "g2",
+        gradeLabel: "고2",
+        semester: "1학기",
+        preset: "g2",
+        examScope: "고2 1학기 중간/기말",
+        availability: "private_body_required",
+        lessons: [
+          { id: "e1_l1", lessonNo: 1, title: "UNIVERSAL DESIGN FOR EVERYONE" },
+          { id: "e1_l2", lessonNo: 2, title: "THE ABCS OF STOCKS AND STOCK MARKETS" },
+          { id: "e1_l3", lessonNo: 3, title: "The Power of Data in Sports" },
+          { id: "e1_l4", lessonNo: 4, title: "King Jeongjo's Grand Procession" },
+          { id: "e1_l5", lessonNo: 5, title: "Astronaut Yujin's Space Log" },
+        ],
+      },
+      {
+        id: "english_2",
+        label: "영어2",
+        course: "영어2",
+        grade: "g2",
+        gradeLabel: "고2",
+        semester: "2학기",
+        preset: "g2",
+        examScope: "고2 2학기 중간/기말",
+        availability: "not_loaded",
+        lessons: [
+          { id: "e2_l1", lessonNo: 1, title: "본문 파일 미등록" },
+        ],
+      },
+    ],
+  };
+})();

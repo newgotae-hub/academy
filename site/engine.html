@@ -14,7 +14,7 @@
         <strong>Transform Engine</strong>
       </a>
       <nav>
-        <a href="#workspace">원문 입력</a>
+        <a href="#workspace">교과서 선택</a>
         <a href="#analysis">분석 결과</a>
         <a href="#generation">문항 생성</a>
         <a href="#bank">문제은행</a>
@@ -63,16 +63,30 @@
         <div class="panel-head">
           <div>
             <p class="eyebrow">Step 1</p>
-            <h2>원문 입력과 메타데이터</h2>
+            <h2>YBM박 교과서 선택</h2>
           </div>
           <div class="panel-actions">
-            <button type="button" class="secondary" id="loadSample">샘플 입력</button>
+            <button type="button" class="secondary" id="loadTextbookPassage">선택 본문 불러오기</button>
             <button type="button" class="primary" id="runAnalyze">지문 분석</button>
           </div>
         </div>
 
         <div class="workspace-grid">
           <form class="meta-grid" id="metaForm">
+            <label>
+              <span>출판사</span>
+              <select id="publisher" disabled>
+                <option value="ybm_park">YBM박</option>
+              </select>
+            </label>
+            <label>
+              <span>책</span>
+              <select id="textbookBook"></select>
+            </label>
+            <label>
+              <span>단원 제목</span>
+              <select id="textbookLesson"></select>
+            </label>
             <label>
               <span>학년</span>
               <select id="grade">
@@ -112,8 +126,8 @@
           </form>
 
           <label class="paste-box">
-            <span>원문 붙여넣기</span>
-            <textarea id="passageText" spellcheck="false" placeholder="본문 또는 학평 지문을 여기에 붙여넣으세요."></textarea>
+            <span>선택된 본문</span>
+            <textarea id="passageText" spellcheck="false" placeholder="책과 단원 제목을 고르면 본문이 자동으로 들어옵니다. 필요하면 여기서 직접 수정할 수 있습니다."></textarea>
           </label>
         </div>
       </section>
@@ -263,6 +277,7 @@
     </main>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./textbook-catalog.js"></script>
     <script src="./engine-core.js"></script>
     <script src="./engine-ui.js"></script>
   </body>

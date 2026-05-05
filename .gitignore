@@ -25,6 +25,7 @@ tmp_*
 *.csv
 g1_quality_loop_latest.txt
 광영여고_*.md
+site/textbook-private.js
 
 # Keep code-facing project docs trackable
 !KY_Transform_Engine_README.md

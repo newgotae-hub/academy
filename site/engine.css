@@ -265,6 +265,12 @@ select:focus-visible {
   grid-template-columns: 1fr;
 }
 
+#publisher {
+  background: #f0ece3;
+  color: #4f463a;
+  font-weight: 900;
+}
+
 label span {
   display: block;
   margin-bottom: 6px;
