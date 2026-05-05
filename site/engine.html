@@ -19,6 +19,7 @@
         <a href="#generation">문항 생성</a>
         <a href="#bank">문제은행</a>
         <a href="#mock">동형 모의</a>
+        <a href="#paper">시험지 출력</a>
         <a href="#export">내보내기</a>
       </nav>
       <div class="side-note">
@@ -287,10 +288,27 @@
         <div id="mockPreview" class="mock-preview empty-state">문제은행에 문항을 저장한 뒤 조립하세요.</div>
       </section>
 
-      <section id="export" class="engine-panel">
+      <section id="paper" class="engine-panel paper-panel">
         <div class="panel-head">
           <div>
             <p class="eyebrow">Step 6</p>
+            <h2>실제 시험지 포맷 출력</h2>
+          </div>
+          <div class="panel-actions">
+            <button type="button" class="secondary" id="refreshExamPaper">시험지 미리보기 갱신</button>
+            <button type="button" class="primary" id="printExamPaper">PDF로 인쇄</button>
+          </div>
+        </div>
+        <div class="paper-note">
+          본문 지문을 먼저 배치하고, 그 아래에 문항을 실제 시험지처럼 2단으로 배열합니다. 인쇄 시 앱 UI는 사라지고 시험지만 출력됩니다.
+        </div>
+        <div id="examPaperPreview" class="exam-paper-preview empty-state">동형 모의고사를 조립하거나 생성 문항을 만든 뒤 시험지 미리보기를 갱신하세요.</div>
+      </section>
+
+      <section id="export" class="engine-panel">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">Step 7</p>
             <h2>프로젝트 백업/복원</h2>
           </div>
         </div>

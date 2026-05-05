@@ -214,6 +214,8 @@
     $("exportBankJson").addEventListener("click", () => exportJson(state.bank, "ky-bank.json"));
     $("clearBank").addEventListener("click", clearBank);
     $("buildMock").addEventListener("click", buildMock);
+    $("refreshExamPaper").addEventListener("click", () => renderExamPaper({ notify: true }));
+    $("printExamPaper").addEventListener("click", printExamPaper);
     $("exportMockCsv").addEventListener("click", exportMockCsv);
     $("exportMockJson").addEventListener("click", () => exportJson(state.mock || {}, "ky-mock-exam.json"));
     $("exportProject").addEventListener("click", exportProject);
@@ -751,6 +753,7 @@
     renderQuestions();
     renderBank();
     renderMock();
+    renderExamPaper();
   }
 
   function renderLibraryStatus() {
@@ -1028,6 +1031,225 @@
     );
     preview.append(summary);
     state.mock.items.forEach((item, index) => preview.append(renderQuestionCard(item, index)));
+  }
+
+  function printExamPaper() {
+    const items = examPaperItems();
+    if (!items.length) {
+      showToast("출력할 문항이 없습니다. 먼저 문항을 생성하거나 동형 모의를 조립하세요.");
+      return;
+    }
+    renderExamPaper();
+    window.print();
+  }
+
+  function examPaperItems() {
+    if (state.mock?.items?.length) return state.mock.items;
+    if (state.generated?.length) return state.generated;
+    return [];
+  }
+
+  function renderExamPaper(options = {}) {
+    const { notify = false } = options;
+    const preview = $("examPaperPreview");
+    if (!preview) return;
+    const items = examPaperItems();
+    clear(preview);
+    if (!items.length) {
+      preview.className = "exam-paper-preview empty-state";
+      preview.textContent = "동형 모의고사를 조립하거나 생성 문항을 만든 뒤 시험지 미리보기를 갱신하세요.";
+      return;
+    }
+
+    preview.className = "exam-paper-preview";
+    const title = state.mock?.title || $("mockTitle").value.trim() || $("examScope").value.trim() || "고1 1학기 중간 동형";
+    const paper = create("div", { className: "exam-paper" });
+    paper.append(renderExamCover(title));
+    renderExamBodyPages(title, items).forEach((page) => paper.append(page));
+    preview.append(paper);
+    if (notify) showToast("본문 포함 학생용 시험지 포맷을 갱신했습니다.");
+  }
+
+  function renderExamCover(title) {
+    const page = create("section", { className: "exam-page exam-cover-page" });
+    appendExamFrame(page, 1, 4);
+    const inner = create("div", { className: "exam-cover-content" });
+    inner.append(
+      create("div", { className: "cover-line cover-year", text: "2025학년도  1학년" }),
+      create("div", { className: "cover-line cover-term", text: "1학기  중간고사" }),
+      create("div", { className: "cover-subject", text: "( 공통영어1 )" }),
+      create("div", { className: "cover-date", text: "일 시 : ( 4 )월 ( 29 )일 ( 2 )교시" }),
+      create("div", { className: "cover-notice", text: "※ 시험이 시작되기 전까지 표지를 넘기지 마시오." }),
+      create("div", { className: "cover-copies", text: "인쇄 ( 330 )매" }),
+      create("div", { className: "cover-school", text: "광영여자고등학교" }),
+    );
+    inner.append(create("div", { className: "cover-set-title", text: title }));
+    page.append(inner);
+    return page;
+  }
+
+  function renderExamBodyPages(title, items) {
+    const blocks = buildExamBlocks(items);
+    const pages = [];
+    const pageBuckets = paginateExamBlocks(blocks);
+    pageBuckets.forEach((bucket, index) => {
+      const pageNo = index + 2;
+      const page = create("section", { className: "exam-page exam-body-page" });
+      appendExamFrame(page, pageNo, pageBuckets.length + 1);
+      page.append(renderExamHeader(title));
+      const content = create("div", { className: "exam-body-content" });
+      bucket.forEach((block) => content.append(renderExamBlock(block)));
+      page.append(content);
+      pages.push(page);
+    });
+    return pages;
+  }
+
+  function buildExamBlocks(items) {
+    const blocks = [
+      {
+        kind: "notice",
+        text: "※ OMR 카드(객관식 문항)는 컴퓨터용 수성사인펜으로 표기해야 하며, 그 외의 표기는 모두 영(0)점 처리됩니다.",
+      },
+      {
+        kind: "count",
+        text: `선택형 ( ${items.filter((item) => item.family !== "short_answer").length} )문항    단답형 ( ${items.filter((item) => item.family === "short_answer").length} )문항    서·논술형 ( 0 )문항`,
+      },
+    ];
+
+    const groups = groupItemsBySource(items);
+    let objectiveNo = 6;
+    let shortNo = 1;
+    groups.forEach((group) => {
+      const passageChunks = splitPassageIntoPaperChunks(group.passage || passageForItem(group.items[0]) || "");
+      if (passageChunks.length) {
+        passageChunks.forEach((chunk, chunkIndex) => {
+          blocks.push({
+            kind: "passage",
+            title: chunkIndex === 0 ? `${objectiveNo}-${objectiveNo + Math.max(group.items.length - 1, 0)}. 다음 글을 읽고 물음에 답하시오.` : "위 글의 계속",
+            text: chunk,
+          });
+        });
+      }
+
+      group.items.forEach((item) => {
+        const isShort = item.family === "short_answer";
+        const displayNo = isShort ? `단답형 ${shortNo++}` : String(objectiveNo++);
+        blocks.push({
+          kind: isShort ? "short" : "question",
+          no: displayNo,
+          points: item.points || (isShort ? 3.5 : 2.8),
+          stem: item.stem || item.prompt || "",
+          prompt: item.prompt && item.prompt !== item.stem ? item.prompt : "",
+          options: Array.isArray(item.options) ? item.options : [],
+        });
+      });
+    });
+    return blocks;
+  }
+
+  function splitPassageIntoPaperChunks(passage) {
+    const paragraphs = String(passage || "")
+      .split(/\n{2,}/)
+      .map((paragraph) => paragraph.trim())
+      .filter(Boolean);
+    const chunks = [];
+    let current = [];
+    let length = 0;
+    paragraphs.forEach((paragraph) => {
+      const nextLength = length + paragraph.length;
+      if (current.length && nextLength > 1850) {
+        chunks.push(current.join("\n\n"));
+        current = [];
+        length = 0;
+      }
+      current.push(paragraph);
+      length += paragraph.length;
+    });
+    if (current.length) chunks.push(current.join("\n\n"));
+    return chunks;
+  }
+
+  function paginateExamBlocks(blocks) {
+    const pages = [];
+    let current = [];
+    let used = 0;
+    const capacity = 98;
+    blocks.forEach((block) => {
+      const weight = examBlockWeight(block);
+      if (current.length && used + weight > capacity) {
+        pages.push(current);
+        current = [];
+        used = 0;
+      }
+      current.push(block);
+      used += weight;
+    });
+    if (current.length) pages.push(current);
+    return pages;
+  }
+
+  function examBlockWeight(block) {
+    const text = [block.title, block.text, block.stem, block.prompt, ...(block.options || [])].join(" ");
+    const base = block.kind === "passage" ? 4 : block.kind === "question" ? 7 : block.kind === "short" ? 8 : 2;
+    return base + Math.ceil(text.length / 88) + (block.options?.length || 0) * 2;
+  }
+
+  function renderExamBlock(block) {
+    const wrap = create("div", { className: `exam-block exam-block-${block.kind}` });
+    if (block.kind === "notice" || block.kind === "count") {
+      wrap.append(create("p", { text: block.text }));
+      return wrap;
+    }
+    if (block.kind === "passage") {
+      wrap.append(create("h3", { text: block.title }));
+      block.text
+        .split(/\n{2,}/)
+        .map((paragraph) => paragraph.trim())
+        .filter(Boolean)
+        .forEach((paragraph) => wrap.append(create("p", { text: paragraph })));
+      return wrap;
+    }
+
+    const title = `${block.no}. ${block.stem}${block.points ? ` (${block.points})` : ""}`;
+    wrap.append(create("h3", { text: title }));
+    if (block.prompt) wrap.append(create("p", { text: block.prompt }));
+    if (block.options.length) {
+      const list = create("ol", { className: "exam-options" });
+      block.options.forEach((option, index) => {
+        list.append(create("li", { text: `${optionSymbol(index)} ${option}` }));
+      });
+      wrap.append(list);
+    } else {
+      wrap.append(create("p", { className: "exam-answer-line", text: "답: ________________________________________________" }));
+    }
+    return wrap;
+  }
+
+  function optionSymbol(index) {
+    return ["①", "②", "③", "④", "⑤"][index] || `${index + 1}.`;
+  }
+
+  function renderExamHeader() {
+    const header = create("div", { className: "exam-body-header" });
+    header.append(
+      create("div", { className: "header-left", text: "2025학년도  1학년\n1학기  중간고사" }),
+      create("div", { className: "header-subject", text: "공통영어1" }),
+      create("div", { className: "header-subject-suffix", text: "과" }),
+      create("div", { className: "header-date-label", text: "일시" }),
+      create("div", { className: "header-date", text: "4월 29일 (화)요일\n( 2 )교시\n인쇄매수 ( 330 )매" }),
+    );
+    return header;
+  }
+
+  function appendExamFrame(page, pageNo, totalPages) {
+    page.append(create("div", { className: "exam-border" }));
+    page.append(create("div", { className: "exam-footer-grid" }));
+    page.append(create("div", { className: "exam-footer-left", text: "(  1  ) 학년  ( 공통영어1 )과" }));
+    page.append(create("div", { className: "exam-footer-page", text: `(${pageNo}/${totalPages})` }));
+    page.append(create("div", { className: "exam-footer-sign", text: "고사계  印" }));
+    page.append(create("div", { className: "exam-footer-school", text: "광영여자고등학교" }));
+    page.append(create("div", { className: "exam-footer-en", text: "Kwangyoung Girls High School" }));
   }
 
   function redactAnalysis(analysis) {

@@ -744,6 +744,318 @@ textarea {
   gap: 12px;
 }
 
+.paper-note {
+  border: 1px solid #d7e2f2;
+  border-radius: var(--engine-radius);
+  background: #fbfdff;
+  color: var(--engine-muted);
+  font-size: 13px;
+  font-weight: 720;
+  line-height: 1.55;
+  margin-bottom: 18px;
+  padding: 12px 14px;
+}
+
+.exam-paper-preview {
+  overflow-x: auto;
+  padding: 18px;
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    linear-gradient(rgba(15, 23, 42, 0.04) 1px, transparent 1px),
+    #eef3fb;
+  background-size: 18px 18px;
+}
+
+.exam-paper {
+  display: grid;
+  justify-content: center;
+  gap: 22px;
+}
+
+.exam-page {
+  position: relative;
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  box-shadow: 0 20px 60px rgba(23, 32, 51, 0.18);
+  font-family:
+    "Batang",
+    "Gulim",
+    "Malgun Gothic",
+    serif;
+  letter-spacing: 0;
+}
+
+.exam-border {
+  position: absolute;
+  inset: 12.2mm 5.8mm 16.1mm 6.5mm;
+  border: 0.35pt solid #000;
+  pointer-events: none;
+}
+
+.exam-footer-grid {
+  position: absolute;
+  left: 8.6mm;
+  right: 5.6mm;
+  bottom: 8.4mm;
+  height: 7.3mm;
+  border-top: 0.35pt solid #000;
+  border-bottom: 0.35pt solid #000;
+  pointer-events: none;
+}
+
+.exam-footer-grid::before,
+.exam-footer-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 0.35pt solid #000;
+}
+
+.exam-footer-grid::before {
+  left: 40.2%;
+}
+
+.exam-footer-grid::after {
+  left: 57.5%;
+}
+
+.exam-footer-left,
+.exam-footer-page,
+.exam-footer-sign,
+.exam-footer-school,
+.exam-footer-en {
+  position: absolute;
+  z-index: 2;
+  font-size: 8.15pt;
+  line-height: 1;
+}
+
+.exam-footer-left {
+  left: 10mm;
+  bottom: 11mm;
+}
+
+.exam-footer-page {
+  left: 0;
+  right: 0;
+  bottom: 11mm;
+  text-align: center;
+}
+
+.exam-footer-sign {
+  right: 55mm;
+  bottom: 11mm;
+}
+
+.exam-footer-school {
+  right: 17mm;
+  bottom: 11mm;
+}
+
+.exam-footer-en {
+  right: 17mm;
+  bottom: 9.2mm;
+  font-size: 5.75pt;
+}
+
+.exam-cover-content {
+  position: absolute;
+  inset: 46mm 20mm 34mm;
+  text-align: center;
+}
+
+.cover-line {
+  font-weight: 800;
+}
+
+.cover-year {
+  margin-top: 0;
+  font-size: 26.2pt;
+  line-height: 1.55;
+}
+
+.cover-term {
+  margin-top: 1mm;
+  font-size: 26.2pt;
+  line-height: 1.55;
+}
+
+.cover-subject {
+  margin-top: 18mm;
+  font-size: 32.6pt;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.cover-date {
+  margin-top: 20mm;
+  font-size: 16.3pt;
+}
+
+.cover-notice {
+  width: 140.4mm;
+  margin: 24mm auto 0;
+  border: 0.35pt solid #000;
+  font-size: 13.1pt;
+  line-height: 9mm;
+}
+
+.cover-copies {
+  margin-top: 4mm;
+  font-size: 9pt;
+}
+
+.cover-school {
+  margin-top: 27mm;
+  font-size: 19.6pt;
+  font-weight: 900;
+}
+
+.cover-set-title {
+  margin-top: 8mm;
+  color: #111;
+  font-size: 9pt;
+  line-height: 1.35;
+}
+
+.exam-body-header {
+  position: absolute;
+  left: 6.4mm;
+  top: 12.2mm;
+  width: 197.7mm;
+  height: 24.7mm;
+  border: 0.35pt solid #000;
+}
+
+.exam-body-header > div {
+  position: absolute;
+  white-space: pre-line;
+}
+
+.header-left {
+  left: 10.8mm;
+  top: 4.2mm;
+  font-size: 14.75pt;
+  line-height: 1.3;
+}
+
+.header-subject {
+  left: 75.6mm;
+  top: 8.2mm;
+  font-size: 24.5pt;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.header-subject-suffix {
+  left: 126mm;
+  top: 8.9mm;
+  font-size: 16.3pt;
+}
+
+.header-date-label {
+  left: 135.3mm;
+  top: 6.3mm;
+  font-size: 12.2pt;
+}
+
+.header-date {
+  right: 11.8mm;
+  top: 4.1mm;
+  font-size: 12.2pt;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.exam-body-header::before {
+  content: "";
+  position: absolute;
+  left: 64.8mm;
+  top: 0;
+  bottom: 0;
+  border-left: 0.35pt solid #000;
+}
+
+.exam-body-header::after {
+  content: "";
+  position: absolute;
+  right: 58.3mm;
+  top: 0;
+  bottom: 7.4mm;
+  border-left: 0.35pt solid #000;
+}
+
+.exam-body-page::after {
+  content: "";
+  position: absolute;
+  left: 105.3mm;
+  top: 37.4mm;
+  bottom: 16.8mm;
+  border-left: 0.35pt solid #000;
+}
+
+.exam-body-content {
+  position: absolute;
+  left: 8.2mm;
+  right: 7.4mm;
+  top: 41.3mm;
+  bottom: 18.4mm;
+  column-count: 2;
+  column-gap: 6.1mm;
+  column-rule: 0.35pt solid #000;
+  font-size: 8.05pt;
+  line-height: 11.55pt;
+  text-align: justify;
+}
+
+.exam-block {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  margin: 0 0 3.4mm;
+}
+
+.exam-block p,
+.exam-block h3,
+.exam-options {
+  margin: 0;
+  padding: 0;
+}
+
+.exam-block p {
+  margin-bottom: 2.1mm;
+}
+
+.exam-block-passage h3,
+.exam-block-question h3,
+.exam-block-short h3 {
+  font-size: 8.05pt;
+  font-weight: 900;
+  line-height: 11.8pt;
+  margin-bottom: 1.2mm;
+}
+
+.exam-block-passage p {
+  text-indent: 0;
+}
+
+.exam-options {
+  list-style: none;
+}
+
+.exam-options li {
+  margin: 0 0 1.1mm 3.4mm;
+  text-indent: -3.4mm;
+}
+
+.exam-answer-line {
+  margin-top: 2mm;
+  white-space: nowrap;
+}
+
 .source-passage {
   border: 1px solid #c9d7eb;
   border-radius: var(--engine-radius);
@@ -1025,5 +1337,67 @@ textarea {
 
   textarea {
     min-height: 320px;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    min-height: 297mm;
+    background: #fff !important;
+  }
+
+  .engine-side,
+  .engine-top,
+  .engine-status,
+  .engine-panel:not(.paper-panel),
+  .paper-panel .panel-head,
+  .paper-note,
+  .toast {
+    display: none !important;
+  }
+
+  .engine-main {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .paper-panel {
+    margin: 0 !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-width: none !important;
+    background: #fff !important;
+  }
+
+  .exam-paper-preview {
+    overflow: visible !important;
+    padding: 0 !important;
+    background: #fff !important;
+  }
+
+  .exam-paper {
+    display: block !important;
+  }
+
+  .exam-page {
+    width: 210mm !important;
+    height: 297mm !important;
+    box-shadow: none !important;
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .exam-page:last-child {
+    break-after: auto;
+    page-break-after: auto;
   }
 }
